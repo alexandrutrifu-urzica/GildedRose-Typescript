@@ -11,6 +11,12 @@ export class Item {
 }
 
 export class GildedRose {
+    static maxQuality: number = 50;
+    static specialItemNames: string[] = [
+        'Aged Brie',
+        'Backstage passes to a TAFKAL80ETC concert',
+        'Sulfuras, Hand of Ragnaros'
+    ]
     items: Array<Item>;
 
     constructor(items = [] as Array<Item>) {
@@ -19,39 +25,37 @@ export class GildedRose {
 
     updateQuality() {
         for (let i = 0; i < this.items.length; i++) {
+            const currentItem = this.items[i]
+
             // Quality changes
-            if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-                if (this.items[i].quality > 0) {
-                    if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                        this.items[i].quality = this.items[i].quality - 1
-                    }
+            if (!GildedRose.specialItemNames.includes(currentItem.name)) {
+                this.decreaseQuality(currentItem)
+            }
+
+            if (currentItem.name == 'Aged Brie') {
+                this.increaseQuality(currentItem)
+            }
+
+            if (currentItem.name == 'Backstage passes to a TAFKAL80ETC concert') {
+                this.increaseQuality(currentItem)
+
+                if (currentItem.sellIn < 11) {
+                    this.increaseQuality(currentItem)
                 }
-            } else {
-                if (this.items[i].quality < 50) {
-                    this.items[i].quality = this.items[i].quality + 1
-                    if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-                        if (this.items[i].sellIn < 11) {
-                            if (this.items[i].quality < 50) {
-                                this.items[i].quality = this.items[i].quality + 1
-                            }
-                        }
-                        if (this.items[i].sellIn < 6) {
-                            if (this.items[i].quality < 50) {
-                                this.items[i].quality = this.items[i].quality + 1
-                            }
-                        }
-                    }
+
+                if (currentItem.sellIn < 6) {
+                    this.increaseQuality(currentItem)
                 }
             }
 
-            // SellIn Value Changes
+            // 'sellIn' Value Decrease
             if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
                 this.items[i].sellIn -= 1;
             }
 
-            // Handle negative sellIn values
+            // Handle negative 'sellIn' values
             if (this.items[i].sellIn < 0) {
-                this.items[i].quality = this.handleNegativeSellIn(this.items[i])
+                this.handleNegativeSellIn(this.items[i])
             }
         }
 
@@ -59,24 +63,42 @@ export class GildedRose {
     }
 
     /**
-     * Returns updated quality based on item type
+     * Regular quality decrease
      * @param item
      * @private
      */
-    private handleNegativeSellIn(item: Item): number {
-        if (item.name == 'Aged Brie' && item.quality < 50) {
-            return item.quality + 1
+    private decreaseQuality(item: Item) {
+        item.quality = Math.max(0, item.quality - 1)
+    }
+
+    /**
+     * Regular quality increase
+     * @param item
+     * @private
+     */
+    private increaseQuality(item: Item) {
+        item.quality = Math.min(GildedRose.maxQuality, item.quality + 1)
+    }
+
+    /**
+     * Returns updated quality based on item type once 'sellIn' value goes below zero
+     * @param item
+     * @private
+     */
+    private handleNegativeSellIn(item: Item) {
+        if (item.name == 'Aged Brie') {
+            this.increaseQuality(item)
         }
 
         if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
-            return 0
+            item.quality = 0
         }
 
         if (item.name == 'Sulfuras, Hand of Ragnaros') {
-            return item.quality
+            return
         }
 
         // Common item (regular behavior)
-        return (item.quality > 0) ? item.quality - 1 : 0
+        this.decreaseQuality(item)
     }
 }
