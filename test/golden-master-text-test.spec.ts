@@ -17,7 +17,7 @@ describe("Golden Master Test", () => {
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 }
         ]
 
-        const expectedUpdatedItems: Item[] = [
+        const firstStageUpdatedItems: Item[] = [
             { name: "Aged Brie", sellIn: 9, quality: 21 },
             { name: "Sulfuras, Hand of Ragnaros", sellIn: 0, quality: 80 },
             { name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 14, quality: 21 },
@@ -29,10 +29,23 @@ describe("Golden Master Test", () => {
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 }
         ]
 
+        const secondStageUpdatedItems: Item[] = [
+            { name: "Aged Brie", sellIn: 8, quality: 22 },
+            { name: "Sulfuras, Hand of Ragnaros", sellIn: 0, quality: 80 },
+            { name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 13, quality: 22 },
+            { name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 3, quality: 41 },
+            { name: "Elixir of the Mongoose", sellIn: 3, quality: 5 },
+            { name: "Dexterity Vest", sellIn: 8, quality: 18 },
+            { name: "Conjured Mana Cake", sellIn: 1, quality: 4 },
+            { name: "Aged Brie", sellIn: 0, quality: 2 },
+            { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 }
+        ]
+
 
         const gildedRose = new GildedRose(items)
 
-        // Assert equality for each updated item
-        expect(gildedRose.updateQuality()).to.deep.equal(expectedUpdatedItems)
+        // Assert equality for multiple runs
+        expect(gildedRose.updateQuality()).to.deep.equal(firstStageUpdatedItems)
+        expect(gildedRose.updateQuality()).to.deep.equal(secondStageUpdatedItems)
     })
 })
