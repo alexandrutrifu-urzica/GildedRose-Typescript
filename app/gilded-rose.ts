@@ -37,13 +37,11 @@ export class GildedRose {
             }
 
             if (currentItem.name == 'Backstage passes to a TAFKAL80ETC concert') {
-                this.increaseQuality(currentItem)
-
-                if (currentItem.sellIn < 11) {
-                    this.increaseQuality(currentItem)
-                }
-
                 if (currentItem.sellIn < 6) {
+                    this.increaseQuality(currentItem, 3)
+                } else if (currentItem.sellIn < 11) {
+                    this.increaseQuality(currentItem, 2)
+                } else {
                     this.increaseQuality(currentItem)
                 }
             }
@@ -63,21 +61,23 @@ export class GildedRose {
     }
 
     /**
-     * Regular quality decrease
+     * Regular quality decrease by value
      * @param item
+     * @param value
      * @private
      */
-    private decreaseQuality(item: Item) {
-        item.quality = Math.max(0, item.quality - 1)
+    private decreaseQuality(item: Item, value: number = 1) {
+        item.quality = Math.max(0, item.quality - value)
     }
 
     /**
-     * Regular quality increase
+     * Regular quality increase by value
      * @param item
+     * @param value
      * @private
      */
-    private increaseQuality(item: Item) {
-        item.quality = Math.min(GildedRose.maxQuality, item.quality + 1)
+    private increaseQuality(item: Item, value: number = 1) {
+        item.quality = Math.min(GildedRose.maxQuality, item.quality + value)
     }
 
     /**
