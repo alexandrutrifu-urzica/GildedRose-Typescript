@@ -19,9 +19,6 @@ export class GildedRose {
 
     updateQuality() {
         for (let i = 0; i < this.items.length; i++) {
-            const maxQualityCondition = (this.items[i].quality < 50)
-            const positiveQualityCondition = (this.items[i].quality > 0)
-
             // Quality changes
             if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
                 if (this.items[i].quality > 0) {
@@ -54,25 +51,32 @@ export class GildedRose {
 
             // Handle negative sellIn values
             if (this.items[i].sellIn < 0) {
-                if (this.items[i].name == 'Aged Brie' && maxQualityCondition) {
-                    this.items[i].quality = this.items[i].quality + 1
-                    continue
-                }
-
-                if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-                    this.items[i].quality = 0
-                    continue
-                }
-
-                if (this.items[i].name == 'Sulfuras, Hand of Ragnaros') {
-                    continue
-                }
-
-                // Common item (regular behavior)
-                this.items[i].quality = positiveQualityCondition ? this.items[i].quality - 1 : 0
+                this.items[i].quality = this.handleNegativeSellIn(this.items[i])
             }
         }
 
         return this.items;
+    }
+
+    /**
+     * Returns updated quality based on item type
+     * @param item
+     * @private
+     */
+    private handleNegativeSellIn(item: Item): number {
+        if (item.name == 'Aged Brie' && item.quality < 50) {
+            return item.quality + 1
+        }
+
+        if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
+            return 0
+        }
+
+        if (item.name == 'Sulfuras, Hand of Ragnaros') {
+            return item.quality
+        }
+
+        // Common item (regular behavior)
+        return (item.quality > 0) ? item.quality - 1 : 0
     }
 }
