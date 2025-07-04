@@ -13,8 +13,14 @@ describe('Gilded Rose', function () {
         expect(items.map((item) => item.quality)).to.deep.equal([49, 50, 50])
     });
 
-    it('the quality of "Sulfuras, Hand of Ragnaros" should always remain 80', function() {
+    it('the quality of "Sulfuras, Hand of Ragnaros" should always remain 80 (positive sellIn value)', function() {
         const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 5, 80) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(80);
+    });
+
+    it('the quality of "Sulfuras, Hand of Ragnaros" should always remain 80 (negative sellIn value)', function() {
+        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', -1, 80) ]);
         const items = gildedRose.updateQuality();
         expect(items[0].quality).to.equal(80);
     });
