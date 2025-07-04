@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Item, GildedRose } from '../app/gilded-rose';
 
-describe('Gilded Rose', function () {
+describe('Common Items Tests', function () {
 
     it('the quality of a common item should not increase over 50', function() {
         const gildedRose = new GildedRose([
@@ -11,6 +11,74 @@ describe('Gilded Rose', function () {
         ]);
         const items = gildedRose.updateQuality();
         expect(items.map((item) => item.quality)).to.deep.equal([49, 50, 50])
+    });
+
+    it('the sellIn value of common items should always decrease by 1', function() {
+        const gildedRose = new GildedRose([ new Item('foo', 5, 9) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).to.equal(4);
+    });
+});
+
+describe('Backstage Passes Tests', function () {
+    it('the quality of "Backstage Passes" should increase by 1 for sellIn values above 10', function() {
+        const gildedRose = new GildedRose([
+            new Item('Backstage passes to a TAFKAL80ETC concert', 20, 4)
+        ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(5);
+    });
+
+    it('the quality of "Backstage Passes" should increase by 2 for sellIn values smaller or equal to 10', function() {
+        const gildedRose = new GildedRose([
+            new Item('Backstage passes to a TAFKAL80ETC concert', 10, 4)
+        ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(6);
+    });
+
+    it('the quality of "Backstage Passes" should increase by 3 for sellIn values smaller or equal to 5', function() {
+        const gildedRose = new GildedRose([
+            new Item('Backstage passes to a TAFKAL80ETC concert', 2, 4)
+        ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(7);
+    });
+
+    it('the quality of "Backstage Passes" should drop to 0 if sellIn value becomes negative', function() {
+        const gildedRose = new GildedRose([
+            new Item('Backstage passes to a TAFKAL80ETC concert', 1, 4)
+        ]);
+        let items = gildedRose.updateQuality();
+
+        expect(items[0].quality).to.equal(7);
+
+        // Extra update stage
+        items = gildedRose.updateQuality()
+
+        expect(items[0].quality).to.equal(0);
+    });
+})
+
+describe('Aged Brie Tests', function () {
+    it('the quality of "Aged Brie" should increase by 1 for positive sellIn values', function() {
+        const gildedRose = new GildedRose([ new Item('Aged Brie', 5, 4) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(5);
+    });
+
+    it('the quality of "Aged Brie" should increase by 2 for negative sellIn values', function() {
+        const gildedRose = new GildedRose([ new Item('Aged Brie', -5, 4) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(6);
+    });
+})
+
+describe('Sulfuras Item Tests', function () {
+    it('the sellIn value of "Sulfuras, Hand of Ragnaros" should not change', function() {
+        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 5, 80) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).to.equal(5);
     });
 
     it('the quality of "Sulfuras, Hand of Ragnaros" should always remain 80 (positive sellIn value)', function() {
@@ -24,16 +92,4 @@ describe('Gilded Rose', function () {
         const items = gildedRose.updateQuality();
         expect(items[0].quality).to.equal(80);
     });
-
-    it('the sellIn value of "Sulfuras, Hand of Ragnaros" should not change', function() {
-        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 5, 80) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].sellIn).to.equal(5);
-    });
-
-    it('the quality of "Aged Brie" should always increase only by 1', function() {
-        const gildedRose = new GildedRose([ new Item('Aged Brie', 5, 4) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(5);
-    });
-});
+})
