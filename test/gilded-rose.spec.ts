@@ -76,9 +76,13 @@ describe('Aged Brie Tests', function () {
 
 describe('Sulfuras Item Tests', function () {
     it('the sellIn value of "Sulfuras, Hand of Ragnaros" should not change', function() {
-        const gildedRose = new GildedRose([ new Item('Sulfuras, Hand of Ragnaros', 5, 80) ]);
+        const gildedRose = new GildedRose([
+            new Item('Sulfuras, Hand of Ragnaros', 5, 80),
+            new Item('Sulfuras, Hand of Ragnaros', -1, 80)
+        ]);
         const items = gildedRose.updateQuality();
-        expect(items[0].sellIn).to.equal(5);
+
+        expect(items.map((item) => item.sellIn)).to.deep.equal([5, -1]);
     });
 
     it('the quality of "Sulfuras, Hand of Ragnaros" should always remain 80 (positive sellIn value)', function() {
