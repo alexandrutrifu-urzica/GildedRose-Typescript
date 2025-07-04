@@ -15,7 +15,8 @@ export class GildedRose {
     static specialItemNames: string[] = [
         'Aged Brie',
         'Backstage passes to a TAFKAL80ETC concert',
-        'Sulfuras, Hand of Ragnaros'
+        'Sulfuras, Hand of Ragnaros',
+        'Conjured Mana Cake'
     ]
     items: Array<Item>;
 
@@ -27,9 +28,21 @@ export class GildedRose {
         for (let i = 0; i < this.items.length; i++) {
             const currentItem = this.items[i]
 
-            // First-stage quality changes
+            // Handle quality changes if 'sellIn' value has dropped below zero
+            if (currentItem.sellIn < 0) {
+                this.handleNegativeSellIn(currentItem)
+                this.decreaseSellIn(currentItem)
+
+                continue
+            }
+
+            // Quality changes for positive 'sellIn' values
             if (!GildedRose.specialItemNames.includes(currentItem.name)) {
                 this.decreaseQuality(currentItem)
+            }
+
+            if (currentItem.name == 'Conjured Mana Cake') {
+                this.decreaseQuality(currentItem, 2)
             }
 
             if (currentItem.name == 'Aged Brie') {
@@ -46,15 +59,7 @@ export class GildedRose {
                 }
             }
 
-            // 'sellIn' Value Decrease
-            if (currentItem.name != 'Sulfuras, Hand of Ragnaros') {
-                currentItem.sellIn -= 1;
-            }
-
-            // Handle extra quality changes if 'sellIn' value drops below zero
-            if (currentItem.sellIn < 0) {
-                this.handleNegativeSellIn(currentItem)
-            }
+            this.decreaseSellIn(currentItem)
         }
 
         return this.items;
@@ -87,7 +92,12 @@ export class GildedRose {
      */
     private handleNegativeSellIn(item: Item) {
         if (item.name == 'Aged Brie') {
-            this.increaseQuality(item)
+            this.increaseQuality(item, 2)
+            return
+        }
+
+        if (item.name == 'Conjured Mana Cake') {
+            this.decreaseQuality(item, 4)
             return
         }
 
@@ -101,6 +111,17 @@ export class GildedRose {
         }
 
         // Common item (regular behavior)
-        this.decreaseQuality(item)
+        this.decreaseQuality(item, 2)
+    }
+
+    /**
+     * Decreases 'sellIn' value for common items
+     * @param item
+     * @private
+     */
+    private decreaseSellIn(item: Item) {
+        if (item.name != 'Sulfuras, Hand of Ragnaros') {
+            item.sellIn -= 1;
+        }
     }
 }

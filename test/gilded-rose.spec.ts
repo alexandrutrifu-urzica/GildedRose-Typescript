@@ -97,3 +97,17 @@ describe('Sulfuras Item Tests', function () {
         expect(items[0].quality).to.equal(80);
     });
 })
+
+describe('Conjured Mana Cake Tests', function () {
+    it('the quality of "Conjured Mana Cake" should decrease by 2 for positive sellIn values', function() {
+        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', 5, 4) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(2);
+    });
+
+    it('the quality of "Conjured Mana Cake" should decrease by 4 for negative sellIn values', function() {
+        const gildedRose = new GildedRose([ new Item('Conjured Mana Cake', -5, 4) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(0);
+    });
+})
