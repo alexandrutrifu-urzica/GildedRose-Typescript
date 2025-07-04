@@ -27,7 +27,7 @@ export class GildedRose {
         for (let i = 0; i < this.items.length; i++) {
             const currentItem = this.items[i]
 
-            // Quality changes
+            // First-stage quality changes
             if (!GildedRose.specialItemNames.includes(currentItem.name)) {
                 this.decreaseQuality(currentItem)
             }
@@ -49,13 +49,13 @@ export class GildedRose {
             }
 
             // 'sellIn' Value Decrease
-            if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].sellIn -= 1;
+            if (currentItem.name != 'Sulfuras, Hand of Ragnaros') {
+                currentItem.sellIn -= 1;
             }
 
-            // Handle negative 'sellIn' values
-            if (this.items[i].sellIn < 0) {
-                this.handleNegativeSellIn(this.items[i])
+            // Handle extra quality changes if 'sellIn' value drops below zero
+            if (currentItem.sellIn < 0) {
+                this.handleNegativeSellIn(currentItem)
             }
         }
 
