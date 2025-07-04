@@ -88,10 +88,12 @@ export class GildedRose {
     private handleNegativeSellIn(item: Item) {
         if (item.name == 'Aged Brie') {
             this.increaseQuality(item)
+            return
         }
 
         if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
             item.quality = 0
+            return
         }
 
         if (item.name == 'Sulfuras, Hand of Ragnaros') {
