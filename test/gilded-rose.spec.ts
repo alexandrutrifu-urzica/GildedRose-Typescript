@@ -2,15 +2,13 @@ import { expect } from 'chai';
 import { Item, GildedRose } from '../app/gilded-rose';
 
 describe('Common Items Tests', function () {
-
-    it('the quality of a common item should not increase over 50', function() {
+    it('the quality of a common item should decrease by 1 for positive sellIn values and by 2 for negative ones', function() {
         const gildedRose = new GildedRose([
-            new Item('foo', 5, 50),
-            new Item('Aged Brie', 4, 50),
-            new Item('Backstage passes to a TAFKAL80ETC concert', 4, 50),
+            new Item('foo', 2, 49),
+            new Item('foo', -1, 50),
         ]);
         const items = gildedRose.updateQuality();
-        expect(items.map((item) => item.quality)).to.deep.equal([49, 50, 50])
+        expect(items.map((item) => item.quality)).to.deep.equal([48, 48]);
     });
 
     it('the sellIn value of common items should always decrease by 1', function() {
@@ -47,11 +45,11 @@ describe('Backstage Passes Tests', function () {
 
     it('the quality of "Backstage Passes" should drop to 0 if sellIn value becomes negative', function() {
         const gildedRose = new GildedRose([
-            new Item('Backstage passes to a TAFKAL80ETC concert', 1, 4)
+            new Item('Backstage passes to a TAFKAL80ETC concert', 0, 4)
         ]);
         let items = gildedRose.updateQuality();
 
-        expect(items[0].quality).to.equal(7);
+        expect(items[0].quality).to.equal(0);
 
         // Extra update stage
         items = gildedRose.updateQuality()
