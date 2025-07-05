@@ -15,7 +15,9 @@ describe("Golden Master Test", () => {
             { name: "Conjured Mana Cake", sellIn: 3, quality: 6 },
             { name: "Aged Brie", "sellIn": 2, quality: 0 },
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 },
-            { name: "Aged Brie", "sellIn": -1, quality: 0 }
+            { name: "Aged Brie", sellIn: -1, quality: 0 },
+            { name: "Aged Brie", sellIn: -2, quality: 49 },
+            { name: "Random Item", sellIn: -2, quality: 20 }
         ]
 
         const firstStageUpdatedItems: Item[] = [
@@ -28,7 +30,9 @@ describe("Golden Master Test", () => {
             { name: "Conjured Mana Cake", sellIn: 2, quality: 5 },
             { name: "Aged Brie", sellIn: 1, quality: 1 },
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 },
-            { name: "Aged Brie", "sellIn": -2, quality: 2 }
+            { name: "Aged Brie", sellIn: -2, quality: 2 },
+            { name: "Aged Brie", sellIn: -3, quality: 50 },
+            { name: "Random Item", sellIn: -3, quality: 18 }
         ]
 
         const secondStageUpdatedItems: Item[] = [
@@ -41,7 +45,9 @@ describe("Golden Master Test", () => {
             { name: "Conjured Mana Cake", sellIn: 1, quality: 4 },
             { name: "Aged Brie", sellIn: 0, quality: 2 },
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 },
-            { name: "Aged Brie", "sellIn": -3, quality: 4 }
+            { name: "Aged Brie", sellIn: -3, quality: 4 },
+            { name: "Aged Brie", sellIn: -4, quality: 50 },
+            { name: "Random Item", sellIn: -4, quality: 16 }
         ]
 
 
