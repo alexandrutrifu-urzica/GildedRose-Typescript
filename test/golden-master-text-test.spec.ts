@@ -27,7 +27,7 @@ describe("Golden Master Test", () => {
             { name: "Elixir of the Mongoose", sellIn: 4, quality: 6 },
             { name: "Dexterity Vest", sellIn: 9, quality: 19 },
             { name: "Conjured Mana Cake", sellIn: 2, quality: 4 },
-            { name: "Conjured Mana Cake", sellIn: -1, quality: 4 },
+            { name: "Conjured Mana Cake", sellIn: -1, quality: 2 },
             { name: "Aged Brie", sellIn: 1, quality: 1 },
             { name: "Sulfuras, Hand of Ragnaros", sellIn: -1, quality: 80 },
             { name: "Aged Brie", "sellIn": -2, quality: 2 }

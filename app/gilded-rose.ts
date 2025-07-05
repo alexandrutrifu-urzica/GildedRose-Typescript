@@ -28,11 +28,11 @@ export class GildedRose {
         for (let i = 0; i < this.items.length; i++) {
             const currentItem = this.items[i]
 
+            this.decreaseSellIn(currentItem)
+
             // Handle quality changes if 'sellIn' value has dropped below zero
             if (currentItem.sellIn < 0) {
                 this.handleNegativeSellIn(currentItem)
-                this.decreaseSellIn(currentItem)
-
                 continue
             }
 
@@ -58,8 +58,6 @@ export class GildedRose {
                     this.increaseQuality(currentItem)
                 }
             }
-
-            this.decreaseSellIn(currentItem)
         }
 
         return this.items;
